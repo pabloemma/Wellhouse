@@ -9,6 +9,8 @@ import board
 import busio
 import adafruit_bme280
 
+import json
+
 class Tmeas(object):
     """ class to measure the temperature from the Bosch BE280
     based on example code from adafruit using their library
@@ -61,7 +63,14 @@ class Tmeas(object):
         self.result['Pressure'] = self.bme280.pressure
         self.result['Altitude'] = self.bme280.altitude
         
-        return self.result
+        
+        # the data communication expects a string so we use json.dumps(result)
+        #on the send side and json.loads(result) on the reciever to get back to dict
+        
+    
+        return json.dumps(self.result)
+    
+    
 
 
 
