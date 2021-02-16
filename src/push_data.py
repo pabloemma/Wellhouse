@@ -38,13 +38,14 @@ class Push(object):
         ip_tup = ip.split(".")
         ip_temp = ip_tup[3]+','  # add comma as separator
 	
-        databuffer = ip_temp + databuffer
+        #databuffer = ip_temp + databuffer
 	
         temp=len(databuffer.encode('utf-8')) # length in bytes of databuffer, whih needs to be a string
         bytes_sent =self.mysocket.send(databuffer.encode('utf-8')) # returns number of bytes sent
         print('bytes sent',bytes_sent,databuffer)
         if(temp - bytes_sent != 0):
             print( "got ",temp," bytes  but sent ",bytes_sent,"  bytes")
+        
         # get ack back from server
         response = self.mysocket.recv(1024)
         print (response) 
