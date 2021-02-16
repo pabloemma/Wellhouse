@@ -6,6 +6,7 @@ import sys
 import time
 import os
 import datetime
+import json
 
 
 
@@ -17,7 +18,7 @@ from multiprocessing.connection import Client
 # Collect events until released
 
 
-class PushData(object):
+class WHSERVER(object):
     '''
     classdocs
     '''
@@ -39,7 +40,7 @@ class PushData(object):
         #otherwise we will create it
         homedir = os.environ['HOME']
         filename = homedir + '/wellhousefiles/'+filename
-        print filename
+        print( filename)
         if os.path.isfile(filename):
             self.output = open(filename,'a')
         else :
@@ -67,11 +68,11 @@ class PushData(object):
         '''
         #conn,addr = self.mysock.accept() # connection address pair
         conn,addr = self.mysock.accept() # connection address pair
-        print int(time.time()) # strip frac seconds
-        print "established connection form ",addr
-        print "**********************************\n\n"
-        print " to stop program, press Ctrl/c \n\n"
-        print "**********************************\n\n"
+        print( int(time.time())) # strip frac seconds)
+        print( "established connection form ",addr)
+        print( "**********************************\n\n")
+        print( " to stop program, press Ctrl/c \n\n")
+        print( "**********************************\n\n")
 
 
  # strip frac seconds
@@ -85,42 +86,35 @@ class PushData(object):
         while True:
             try:
             # wait for data
-                data1 = conn.recv(1024)
+                data = conn.recv(1024)
             #if not data: break
-                if (len(data1)>0): 
-                    #strip out ip
-                    temp_data = data1.split(",")
-                    data = temp_data[1]
-                    
-                #print "this is the receiver and I got",data, len(data)
-                    #print int(time.time()) ,"   ",data , " mm"
-                
-                
-                    if(len(data)==4):
-                        #Check if data is an integer, otherwise ignore it
-                        if data.isdigit():
-                            fl_data = int(data)
-                            myline = str(int(time.time()))+','+temp_data[0]+','+data +'\n'
-                            print myline
-                            self.output.write(myline)
+                if (len(data)>0): 
+                    #decode bytes back to string for json
+                    temp = data.decode("utf-8")
+                   # convert string back into dictionary
+                    data1 = json.loads(temp)
 
-                        else:
-                            print "error in data block sent , not an integer"
-                    else:
-                        fl_data = 1
-                    conn.send('thanks from server')
+               
+                
+                
+                    # write to csv file
+                    myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])
+                    self.output.write(myline)
+                    self.output.flush()
+                    thanks ='thanks from server'
+                    conn.send(thanks.encode("utf-8"))
                     #self.mysock.close()
                 else:
                     break
             except (KeyboardInterrupt, SystemExit):
-                print "got interrupt"
+                print( "got interrupt")
                 self.CloseAll()        
                 #self.scope.emitter(int(data))
             #conn.close()
     def CloseAll(self):
         self.mysock.close()
         self.output.close()
-        print ' going away'
+        print( ' going away')
 
        
         sys.exit(0)
@@ -137,7 +131,7 @@ class PushData(object):
         
             
 if __name__ == '__main__':
-    tel =ExchangeRoot()
+    tel =WHSERVER()
     tel.OpenFile()
     tel.Establish()
     tel.Looping()
