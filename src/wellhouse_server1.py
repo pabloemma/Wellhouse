@@ -1,6 +1,19 @@
 # To change this license header, choose License Headers in Project Properties.
 # To change this template file, choose Tools | Templates
 # and open the template in the editor.
+"""
+this is the main part of the temperature control.
+In order for all the communication to work, first start wellhouse_server1.py
+On the raspi, you need to run wellhouse_control.py, after the server has come up.
+This in turn will call wellhouse.py, which is the actual T measurement and push_data.py
+which pushes the data to the server.
+Currently the wellhouse_control calls the pseudo data generator in wellhous.py
+for the real deal we will need to change this
+
+"""
+
+
+
 import socket
 import sys
 import time
@@ -45,6 +58,10 @@ class WHSERVER(object):
             self.output = open(filename,'a')
         else :
             self.output = open(filename,'w')
+            # write the top line for the columns
+            myline = 'time , ID ,Temp, Humidity,Pressure,Altitude \n'
+            self.output.write(myline)
+            self.output.flush()
              
             
         
@@ -52,7 +69,7 @@ class WHSERVER(object):
     def Establish(self):
         '''
         establish connection with Client
-        for us that should be 192.168.2.22
+        
         '''
         self.mysock = socket.socket() # create socket
         myip = '' #usually leave empty
@@ -98,7 +115,7 @@ class WHSERVER(object):
                 
                 
                     # write to csv file
-                    myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])
+                    myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
                     self.output.flush()
                     thanks ='thanks from server'
