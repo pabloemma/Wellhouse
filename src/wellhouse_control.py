@@ -4,7 +4,7 @@
 
 
 
-
+import time
 import wellhouse as WH
 import push_data as PD
 if __name__ == '__main__':
@@ -22,6 +22,7 @@ if __name__ == '__main__':
     while 1:
         data = WH1.PseudoData()
         MyPush.PushData(data)
+        time.sleep(20)
  
     MyPush.CloseConnection()    
     
