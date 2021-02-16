@@ -5,7 +5,7 @@
 
 import time
 
-#import board
+#import board #!!!!!!! uncomment this on Linux
 import busio
 import adafruit_bme280
 import random
