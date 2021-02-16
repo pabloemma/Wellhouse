@@ -21,6 +21,7 @@ if __name__ == '__main__':
     WH1 = WH.Tmeas(0)
     while 1:
         data = WH1.PseudoData()
+        print('wellhouse control',data)
         MyPush.PushData(data)
         time.sleep(20)
  

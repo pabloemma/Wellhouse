@@ -86,6 +86,7 @@ class ThreadedServer(object):
             #if not data: break
                 if (len(data1)>0): 
                     #strip out ip
+                    print(' listening',data)
                     temp_data = data1.split(",")
                     data = temp_data[1]
                     
