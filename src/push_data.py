@@ -25,7 +25,7 @@ class Push(object):
         '''
         self.mysocket = socket.socket()  #use default protocol and stream
         # now connect to the server
-        print "Esatablishing connection"
+        print ("Esatablishing connection")
         self.mysocket.connect((self.temp_server,self.temp_port))
     def PushData(self,databuffer): 
         '''
@@ -43,10 +43,10 @@ class Push(object):
         temp=len(databuffer.encode('utf-8')) # length in bytes of databuffer, whih needs to be a string
         bytes_sent =self.mysocket.send(databuffer) # returns number of bytes sent
         if(temp - bytes_sent != 0):
-            print "got ",temp," bytes  but sent ",bytes_sent,"  bytes"
+            print( "got ",temp," bytes  but sent ",bytes_sent,"  bytes")
         # get ack back from server
         #response = self.mysocket.recv(1024)
-        #print response 
+        #print (response) 
         
     def get_ip_address(self):
         """ get ip address"""
@@ -62,7 +62,7 @@ class Push(object):
         self.mysocket.close()
          
 if __name__ == '__main__':
-    ip_server = '192.168.2.9' # change for apporpitae server
+    ip_server = '192.168.2.24' # change for apporpitae server
     server_port = 5478
     
     MyPush = Push(ip_server,server_port)

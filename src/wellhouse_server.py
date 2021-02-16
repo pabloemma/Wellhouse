@@ -25,11 +25,11 @@ class ThreadedServer(object):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.sock.bind((self.host, self.port))
-        print int(time.time()) # strip frac seconds
-        print "starting up the wellhouse server on port" ,self.port
-        print "**********************************\n\n"
-        print " to stop program, press Ctrl/c \n\n"
-        print "**********************************\n\n"
+        print( int(time.time())) # strip frac seconds
+        print( "starting up the wellhouse server on port" ,self.port)
+        print( "**********************************\n\n")
+        print( " to stop program, press Ctrl/c \n\n")
+        print( "**********************************\n\n")
 
 
     def OpenFile(self):
@@ -43,11 +43,11 @@ class ThreadedServer(object):
         #otherwise we will create it
         homedir = os.environ['HOME']
         filename = homedir + '/wellhousefiles/'+filename
-        print filename
+        print( filename)
         if os.path.isfile(filename):
-            self.output = open(filename,'a',0)
+            self.output = open(filename,'a')
         else :
-            self.output = open(filename,'w',0)
+            self.output = open(filename,'w')
              
         
 
@@ -60,14 +60,14 @@ class ThreadedServer(object):
 
     def listenToClient(self, client, address):
         size = 1024
-        print " in listen"
+        print( " in listen")
         while True:
             try:
                 data = client.recv(size)
                 if data:
                     # Set the response to echo back the recieved data 
                     response = data
-                    print "all", response
+                    print( "all", response)
                     #client.send(response)
                 else:
                     raise error('Client disconnected')
@@ -78,7 +78,7 @@ class ThreadedServer(object):
             
     def listenToClientAK(self, client, address):
         size = 1024
-        print " in listen"
+        print( " in listen")
         while True:
              try:
             # wait for data
@@ -89,8 +89,8 @@ class ThreadedServer(object):
                     temp_data = data1.split(",")
                     data = temp_data[1]
                     
-                #print "this is the receiver and I got",data, len(data)
-                    #print int(time.time()) ,"   ",data , " mm"
+                #print( "this is the receiver and I got",data, len(data))
+                    #print( int(time.time()) ,"   ",data , " mm")
                 
                 
                     if(len(data)==4):
@@ -98,7 +98,7 @@ class ThreadedServer(object):
                         if data.isdigit():
                             fl_data = int(data)
                             myline = str(int(time.time()))+','+temp_data[0]+','+data +'\n'
-                            print myline
+                            print( myline)
                             # check if we have a new day
                             if(date.today()>self.current_day):
                                 #we have a new day
@@ -108,7 +108,7 @@ class ThreadedServer(object):
                             self.output.write(myline)
 
                         else:
-                            print "error in data block sent , not an integer"
+                            print( "error in data block sent , not an integer")
                     else:
                         fl_data = 1
                     #client.send('thanks from server')
@@ -122,7 +122,7 @@ class ThreadedServer(object):
               
     def CloseAll(self):
         self.output.close()
-        print ' going away'
+        print( ' going away')
 
        
         sys.exit(0)
