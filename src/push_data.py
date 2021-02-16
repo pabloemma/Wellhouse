@@ -17,7 +17,7 @@ class Push(object):
         '''
         self.temp_server = ip_server # connect with ip of server
         self.temp_port = server_port
-	print( "Temp server", self.temp_server,"on port ", self.temp_port)
+        print( "Temp server", self.temp_server,"on port ", self.temp_port)
     
     def Connect2Server(self):
         '''
@@ -34,11 +34,11 @@ class Push(object):
 	
         # make sure we know that we transmitted all the bytes
 	# pack in the last digits of the IP address
-	ip = self.get_ip_address()
-	ip_tup = ip.split(".")
-	ip_temp = ip_tup[3]+','  # add comma as separator
+        ip = self.get_ip_address()
+        ip_tup = ip.split(".")
+        ip_temp = ip_tup[3]+','  # add comma as separator
 	
-	databuffer = ip_temp + databuffer
+        databuffer = ip_temp + databuffer
 	
         temp=len(databuffer.encode('utf-8')) # length in bytes of databuffer, whih needs to be a string
         bytes_sent =self.mysocket.send(databuffer) # returns number of bytes sent

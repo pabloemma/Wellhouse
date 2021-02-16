@@ -15,15 +15,13 @@ if __name__ == '__main__':
     # serial connection device
     device_name = '/dev/ttyS0'
 
-    
     MyPush = PD.Push(ip_server,server_port)
     MyPush.Connect2Server()
     # now open up the serial port
     WH1 = WH.Temp(0)
     while 1:
-    	data = WH1.Measure()
+        data = WH1.Measure()
         MyPush.PushData(data)
  
-    
     MyPush.CloseConnection()    
     
