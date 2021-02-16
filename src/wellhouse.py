@@ -5,10 +5,10 @@
 
 import time
 
-import board
+#import board
 import busio
 import adafruit_bme280
-
+import random
 import json
 
 class Tmeas(object):
@@ -23,9 +23,37 @@ class Tmeas(object):
         1: Guest House
    
          '''
-
+        self.testing = True  # this is a flag to test the program without sensor
+                             #will do the connection to the server and send pseudo data
+ 
          
+       
+         
+        # initialize the random generator for testing purposes
+        if self.testing:
+            random.seed()
+         
+        # the dictionary of values which will be sent to the main server
+        self.ID = ID
+        self.result = {'ID':ID,'Temp':0.,'Humidity':0.,'Pressure':0.,'Altitude':0.}
+
+
+        #switch for debug
+        self.debug = True
+        
         # Create library object using our Bus I2C port
+        if not self.testing:
+            self.InitializeI2C()
+        else:
+            while True:
+                
+                print(json.loads(self.PseudoData()))
+                time.sleep(10)
+            
+  
+        
+    def InitializeI2C(self):
+        """Initailze the I2C system"""
         i2c = busio.I2C(board.SCL, board.SDA)
         self.bme280 = adafruit_bme280.Adafruit_BME280_I2C(i2c)
 
@@ -37,14 +65,8 @@ class Tmeas(object):
         # change this to match the location's pressure (hPa) at sea level
         self.bme280.sea_level_pressure = 1013.25
         
-        # the dictionary of values which will be sent to the main server
-        self.ID = ID
-        self.result = {'ID':ID,'Temp':0.,'Humidity':0.,'Pressure':0.,'Altitude':0.}
-
-
-        #switch for debug
-        self.debug = True
         
+            
     def Measure(self):
         """ this returns a dictionary of values"""
         
@@ -71,6 +93,15 @@ class Tmeas(object):
         return json.dumps(self.result)
     
     
+    def PseudoData(self):
+        """ create pseudo data for test purposes"""
+        self.result['Temp'] = random.uniform(10.,80.)
+        self.result['Humidity'] = random.uniform(10.,100.)
+        self.result['Pressure'] = random.uniform(1000.,1100.)
+        self.result['Altitude'] = 1014.
+ 
+        return json.dumps(self.result)
+
 
 
 
