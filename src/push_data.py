@@ -42,7 +42,7 @@ class Push(object):
 	
         temp=len(databuffer.encode('utf-8')) # length in bytes of databuffer, whih needs to be a string
         bytes_sent =self.mysocket.send(databuffer.encode('utf-8')) # returns number of bytes sent
-        print('bytes sent',bytes_sent)
+        print('bytes sent',bytes_sent,databuffer)
         if(temp - bytes_sent != 0):
             print( "got ",temp," bytes  but sent ",bytes_sent,"  bytes")
         # get ack back from server
