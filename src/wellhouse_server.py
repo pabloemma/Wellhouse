@@ -136,7 +136,7 @@ if __name__ == "__main__":
         except ValueError:
             pass
     """
-    serv = ThreadedServer('',5478)
+    serv = ThreadedServer('192.168.2.24',5478)
     serv.OpenFile()
     serv.listen()
     serv.CloseAll()

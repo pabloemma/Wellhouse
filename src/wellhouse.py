@@ -44,11 +44,11 @@ class Tmeas(object):
         # Create library object using our Bus I2C port
         if not self.testing:
             self.InitializeI2C()
-        else:
-            while True:
+        #else:
+        #    while True:
                 
-                print(json.loads(self.PseudoData()))
-                time.sleep(10)
+        #        print(json.loads(self.PseudoData()))
+        #        time.sleep(10)
             
   
         
