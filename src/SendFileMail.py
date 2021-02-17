@@ -60,7 +60,6 @@ class MyMail(object):
         msg['From'] = 'pabloemma@gmail.com'
         msg['To'] = 'pabloemma@gmail.com'
         # Insert the text to the msg going by e-mail
-        print('sendmail',message)
         msg.attach(MIMEText(message, "plain"))
         # Attach the pdf to the msg going by e-mail
         #with open(self.file, "rb") as f:
@@ -68,6 +67,8 @@ class MyMail(object):
         #    attach = MIMEApplication(f.read(),_subtype="pdf")
         #attach.add_header('Content-Disposition','attachment',filename=str(self.file))
         #msg.attach(attach)
+
+        
         # send msg
         server.send_message(msg)
             

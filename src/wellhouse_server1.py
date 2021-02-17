@@ -20,6 +20,10 @@ import time
 import os
 import datetime
 import json
+import SendFileMail as SFM
+from pathlib import Path
+ 
+
 
 
 
@@ -42,6 +46,15 @@ class WHSERVER(object):
         Constructor
         '''
        
+        #alarm level , if temperature goes below this value we send an email.
+        self.lowtemp = 0. # below 38 we will send an alarm
+        self.email = 'pabloemma@gmail.com' #adress for warning
+        self.counter = 0 # this counter makes sure that we don't get messages every time.
+                         # we do it only every 50 times
+        
+        
+        
+        
         
     def OpenFile(self):
         ''' the default filename is going to be the date of the day
@@ -111,6 +124,10 @@ class WHSERVER(object):
                    # convert string back into dictionary
                     data1 = json.loads(temp)
 
+                    #check for the temperature and send alarm if temperature goes below value defined in the init part
+                    if(data1['Temp'] < self.lowtemp):
+                        self.SendAlarm(data1['ID'],data1['Temp'])
+                        
                
                 
                 
@@ -143,8 +160,28 @@ class WHSERVER(object):
         s.connect(("8.8.8.8", 80))
         return s.getsockname()[0]
 
-               
-# help wth keyboards
+    def SendAlarm(self,ID,Temp):           
+        """ this sends an email if Temperature is below the setpoint"""
+  
+        subject = ' Warning, Temp in sensor '+str(ID) +' low currently at ' +str(Temp)+'F'
+
+        home = str(Path.home())   
+
+        
+        message = ' problems with temperature ' + str(ID)+'   '+str(Temp)+'F'
+        if(self.counter == 0 ):
+            sa = SFM.MyMail(self.email,subject, message)
+            sa.send_email_pdf_figs(home+'/private/LCWA/andifile',message)
+ 
+        self.counter +=1
+        if self.counter == 49:
+            self.counter = 0
+        
+        return
+        
+        
+        
+        
         
             
 if __name__ == '__main__':
