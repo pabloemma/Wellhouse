@@ -90,8 +90,9 @@ class Tmeas(object):
         #on the send side and json.loads(result) on the reciever to get back to dict
         
     
-        return json.dumps(self.result)
-    
+
+        #return json.dumps(self.result)
+        return self.result
     
     def PseudoData(self):
         """ create pseudo data for test purposes"""
@@ -100,8 +101,8 @@ class Tmeas(object):
         self.result['Pressure'] = random.uniform(1000.,1100.)
         self.result['Altitude'] = 1014.
  
-        return json.dumps(self.result)
-
+        #return json.dumps(self.result)
+        return self.result
 
 
 
