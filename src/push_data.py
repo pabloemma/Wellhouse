@@ -18,7 +18,7 @@ class Push(object):
         self.temp_server = ip_server # connect with ip of server
         self.temp_port = server_port
         print( "Temp server", self.temp_server,"on port ", self.temp_port)
-    
+        self.ip = self.get_ip_address()
     def Connect2Server(self):
         '''
         this establisk the socket connection with the server
