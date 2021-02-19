@@ -5,6 +5,7 @@
 import socket
 import sys
 from multiprocessing.connection import Client
+import json
 class Push(object):
     '''
     classdocs
@@ -18,7 +19,12 @@ class Push(object):
         self.temp_server = ip_server # connect with ip of server
         self.temp_port = server_port
         print( "Temp server", self.temp_server,"on port ", self.temp_port)
-        self.ip = self.get_ip_address()
+
+
+        #get ip of the measuring device
+        self.ip = str(self.get_ip_address())
+
+
     def Connect2Server(self):
         '''
         this establisk the socket connection with the server
@@ -27,12 +33,16 @@ class Push(object):
         # now connect to the server
         print ("Esatablishing connection")
         self.mysocket.connect((self.temp_server,self.temp_port))
-    def PushData(self,databuffer): 
+    def PushData(self,databuff):
         '''
         pushes data to server
         '''
 	
- 	
+ 	    # now add the ip to the data buffer and pack into a json data format
+        databuff['IP']=self.ip
+        databuffer = json.loads(databuff)
+
+
         temp=len(databuffer.encode('utf-8')) # length in bytes of databuffer, whih needs to be a string
         bytes_sent =self.mysocket.send(databuffer.encode('utf-8')) # returns number of bytes sent
  
