@@ -27,7 +27,8 @@ from pathlib import Path
 
 import numpy as np
 #from matplotlib.lines import Line2D
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
+import numpy as np
 #import matplotlib.animation as animation
 
  
@@ -60,8 +61,14 @@ class WHSERVER(object):
         
         #More initalization
                          
-        #self.InitStripper()
-        
+       #set axis for plotting
+        plt.ion()
+        plot_duration = 1.
+        self.xmin = time.time()-60. #strt 60 seconds before
+        self.xmax = self.xmin+(plot_duration*3600.) # show plot for x hours
+
+        self.on_launch()
+
     
     def InitStripper(self):    
         """ Initalizes the strip chart """
@@ -73,8 +80,8 @@ class WHSERVER(object):
         """ Creates a strip chart of variable against time """
         
         self.scope.update(mytime,var)
-        
-        
+
+
     def OpenFile(self):
         ''' the default filename is going to be the date of the day
         and it will be in append mode
@@ -146,18 +153,18 @@ class WHSERVER(object):
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])
+
                         
                
                 
-                
+                    #plot data
+                    self.on_running(time.time(),data1['Temp'])
                     # write to csv file
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
                     self.output.flush()
                     
-                    # Now add point to stripchart
-                    #self.DoStripper(int(time.time) , data1['Temp'])
-                    
+
                     
                     thanks ='thanks from server'
                     conn.send(thanks.encode("utf-8"))
@@ -183,6 +190,28 @@ class WHSERVER(object):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         return s.getsockname()[0]
+
+    def on_launch(self):
+        # Set up plot
+        self.figure, self.ax = plt.subplots()
+        self.lines, = self.ax.plot([], [], 'o')
+        # Autoscale on unknown axis and known lims on the other
+        self.ax.set_autoscaley_on(True)
+        self.ax.set_xlim(self.xmin, self.xmax)
+        # Other stuff
+        self.ax.grid()
+
+    def on_running(self, xdata, ydata):
+        # Update data (with the new _and_ the old points)
+        self.lines.set_xdata(xdata)
+        self.lines.set_ydata(ydata)
+        # Need both of these in order to rescale
+        self.ax.relim()
+        self.ax.autoscale_view()
+        # We need to draw *and* flush
+        self.figure.canvas.draw()
+        self.figure.canvas.flush_events()
+
 
     def SendAlarm(self,ID,Temp):           
         """ this sends an email if Temperature is below the setpoint"""
@@ -215,3 +244,7 @@ if __name__ == '__main__':
     tel.Looping()
     tel.CloseAll()
    
+
+
+
+
