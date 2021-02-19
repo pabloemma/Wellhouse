@@ -40,7 +40,7 @@ class Push(object):
 	
  	    # now add the ip to the data buffer and pack into a json data format
         databuff['IP']=self.ip
-        databuffer = json.loads(databuff)
+        databuffer = json.dumps(databuff)
 
 
         temp=len(databuffer.encode('utf-8')) # length in bytes of databuffer, whih needs to be a string
