@@ -62,11 +62,15 @@ class WHSERVER(object):
         #More initalization
                          
        #set axis for plotting
-        plt.ion()
+        #plt.ion()
         plot_duration = 1.
         self.xmin = time.time()-60. #strt 60 seconds before
-        self.xmax = self.xmin+(plot_duration*3600.) # show plot for x hours
+        # self.xmax = self.xmin+(plot_duration*3600.) # show plot for x hours
 
+        self.xmax = self.xmin+120 # show plot for x hours
+
+        self.xdata = []
+        self.ydata = []
         self.on_launch()
 
     
@@ -158,7 +162,9 @@ class WHSERVER(object):
                
                 
                     #plot data
-                    self.on_running(time.time(),data1['Temp'])
+                    self.xdata.append(time.time())
+                    self.ydata.append(data1['Temp'])
+                    self.on_running()
                     # write to csv file
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
@@ -201,10 +207,10 @@ class WHSERVER(object):
         # Other stuff
         self.ax.grid()
 
-    def on_running(self, xdata, ydata):
+    def on_running(self):
         # Update data (with the new _and_ the old points)
-        self.lines.set_xdata(xdata)
-        self.lines.set_ydata(ydata)
+        self.lines.set_xdata(self.xdata)
+        self.lines.set_ydata(self.ydata)
         # Need both of these in order to rescale
         self.ax.relim()
         self.ax.autoscale_view()
