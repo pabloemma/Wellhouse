@@ -11,7 +11,6 @@ import matplotlib.animation as animation
 class Stripper(object):
     def __init__(self, ax, maxt=2, dt=0.02):
         self.ax = ax
-        self.dt = dt
         self.maxt = maxt
         self.tdata = [0]
         self.ydata = [0]
@@ -20,16 +19,16 @@ class Stripper(object):
         self.ax.set_ylim(-.1, 1.1)
         self.ax.set_xlim(0, self.maxt)
 
-    def update(self, y):
-        lastt = self.tdata[-1]
+    def update(self, x , y):
+        lastt = self.tdata[-1] # last item in the list
         if lastt > self.tdata[0] + self.maxt:  # reset the arrays
             self.tdata = [self.tdata[-1]]
             self.ydata = [self.ydata[-1]]
             self.ax.set_xlim(self.tdata[0], self.tdata[0] + self.maxt)
             self.ax.figure.canvas.draw()
 
-        t = self.tdata[-1] + self.dt
-        self.tdata.append(t)
+        
+        self.tdata.append(x)
         self.ydata.append(y)
         self.line.set_data(self.tdata, self.ydata)
         return self.line,

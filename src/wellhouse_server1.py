@@ -22,14 +22,19 @@ import datetime
 import json
 import SendFileMail as SFM
 from pathlib import Path
+
+#import stripper as ST
+
+import numpy as np
+#from matplotlib.lines import Line2D
+#import matplotlib.pyplot as plt
+#import matplotlib.animation as animation
+
  
 
 
 
 
-from array import  array
-from multiprocessing.connection import Client
-#import KeyBoardPoller
 
 
 # Collect events until released
@@ -53,7 +58,21 @@ class WHSERVER(object):
                          # we do it only every 50 times
         
         
+        #More initalization
+                         
+        #self.InitStripper()
         
+    
+    def InitStripper(self):    
+        """ Initalizes the strip chart """
+        
+        self.fig, self.ax = plt.subplots()
+        self.scope = ST.Stripper(self.ax)
+
+    def DoStripper(self,mytime,var):    
+        """ Creates a strip chart of variable against time """
+        
+        self.scope.update(mytime,var)
         
         
     def OpenFile(self):
@@ -135,6 +154,11 @@ class WHSERVER(object):
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
                     self.output.flush()
+                    
+                    # Now add point to stripchart
+                    #self.DoStripper(int(time.time) , data1['Temp'])
+                    
+                    
                     thanks ='thanks from server'
                     conn.send(thanks.encode("utf-8"))
                     #self.mysock.close()
