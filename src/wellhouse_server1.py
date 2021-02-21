@@ -30,7 +30,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import numpy as np
 #import matplotlib.animation as animation
-
+from  dynplot import dynplot
  
 
 
@@ -60,30 +60,11 @@ class WHSERVER(object):
         
         
         #More initalization
-                         
-       #set axis for plotting
-        #plt.ion()
-        plot_duration = 1.
-        self.xmin = time.time()-60. #strt 60 seconds before
-        # self.xmax = self.xmin+(plot_duration*3600.) # show plot for x hours
-
-        self.xmax = self.xmin+120 # show plot for x hours
-
-        self.xdata = []
-        self.ydata = []
-        self.on_launch()
-
+        #window = 100
+        #xmin = time.time()-10.
+        #xmax = time.time()+window
+        #self.dplt = dynplot(ymin=0., ymax=80.,xmin=xmin,xmax=xmax)
     
-    def InitStripper(self):    
-        """ Initalizes the strip chart """
-        
-        self.fig, self.ax = plt.subplots()
-        self.scope = ST.Stripper(self.ax)
-
-    def DoStripper(self,mytime,var):    
-        """ Creates a strip chart of variable against time """
-        
-        self.scope.update(mytime,var)
 
 
     def OpenFile(self):
@@ -162,9 +143,9 @@ class WHSERVER(object):
                
                 
                     #plot data
-                    self.xdata.append(time.time())
-                    self.ydata.append(data1['Temp'])
-                    self.on_running()
+                    temp_time = time.time()
+                    #self.dplt.plot(temp_time,data1['Temp'])
+                    #self.dplt.show(permanent=False)
                     # write to csv file
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
@@ -197,26 +178,6 @@ class WHSERVER(object):
         s.connect(("8.8.8.8", 80))
         return s.getsockname()[0]
 
-    def on_launch(self):
-        # Set up plot
-        self.figure, self.ax = plt.subplots()
-        self.lines, = self.ax.plot([], [], 'o')
-        # Autoscale on unknown axis and known lims on the other
-        self.ax.set_autoscaley_on(True)
-        self.ax.set_xlim(self.xmin, self.xmax)
-        # Other stuff
-        self.ax.grid()
-
-    def on_running(self):
-        # Update data (with the new _and_ the old points)
-        self.lines.set_xdata(self.xdata)
-        self.lines.set_ydata(self.ydata)
-        # Need both of these in order to rescale
-        self.ax.relim()
-        self.ax.autoscale_view()
-        # We need to draw *and* flush
-        self.figure.canvas.draw()
-        self.figure.canvas.flush_events()
 
 
     def SendAlarm(self,ID,Temp):           
