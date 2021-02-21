@@ -1,18 +1,45 @@
 import matplotlib.pyplot as plt
 import numpy as np
-plt.ion() ## Note this correction
-fig=plt.figure()
-plt.axis([0,1000,0,1])
+import time
 
-i=0
-x=list()
-y=list()
 
-while i <1000:
-    temp_y=np.random.random();
-    x.append(i);
-    y.append(temp_y);
-    plt.scatter(i,temp_y);
-    i+=1;
-    plt.show()
-    plt.pause(0.0001) #Note this correction
+
+
+class MyPlot(object):
+
+    def __init__(self):
+
+    # Initialize plots
+
+
+        plt.ion() ## Note this correction
+        self.fig = plt.figure()
+        self.ax = self.fig.add_subplot(1,1,1)
+
+
+        plt.axis([0,200,0,1])
+
+
+        self.x=list()
+        self.y=list()
+
+
+    def RunLoop(self,i=0):
+        while i <200:
+            self.temp_y=np.random.random();
+            self.x.append(i);
+            self.y.append(self.temp_y);
+            time.sleep(.5)
+            self.DoPlot(i)
+            i+=1
+
+    def DoPlot(self,i):
+        plt.scatter(i,self.temp_y);
+
+        plt.show()
+        plt.pause(0.0001) #Note this correction
+
+
+if __name__ == '__main__':
+    MyP = MyPlot()
+    MyP.RunLoop()
