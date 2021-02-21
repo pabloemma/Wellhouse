@@ -17,8 +17,8 @@ class MyPlot(object):
         self.ax = self.fig.add_subplot(1,1,1)
 
 
-        plt.axis([0,200,0,1])
-
+        # set axis
+        self.ax.set(xlim=(0,100.),ylim=(0.,1.))
 
         self.x=list()
         self.y=list()
