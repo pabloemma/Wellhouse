@@ -5,11 +5,16 @@ import time
 
 
 
+
 class MyPlot(object):
 
     def __init__(self):
 
     # Initialize plots
+
+        #Get start time
+        self.start_time = time.time()-5. # start time is programtime minus 5 sec
+        self.max_time = self.start_time +3600.
 
 
         plt.ion() ## Note this correction
@@ -18,23 +23,32 @@ class MyPlot(object):
 
 
         # set axis
-        self.ax.set(xlim=(0,100.),ylim=(0.,1.))
+        self.SetAxis()
 
         self.x=list()
         self.y=list()
 
+    def SetAxis(self):
+        """
+        We are setting the x and y axis
+        xaxis is time. We use min to be start time -5 second, max 3600 after start
+        """
+
+        # set axis
+        self.ax.set(xlim=(self.start_time, self.max_time), ylim=(0., 1.))
 
     def RunLoop(self,i=0):
-        while i <200:
-            self.temp_y=np.random.random();
-            self.x.append(i);
+        while i <100:
+            self.temp_y = np.random.random();
+            self.temp_x = time.time()
+            self.x.append(self.temp_x);
             self.y.append(self.temp_y);
             time.sleep(.5)
-            self.DoPlot(i)
+            self.DoPlot()
             i+=1
 
-    def DoPlot(self,i):
-        plt.scatter(i,self.temp_y);
+    def DoPlot(self):
+        plt.scatter(self.temp_x,self.temp_y);
 
         plt.show()
         plt.pause(0.0001) #Note this correction
