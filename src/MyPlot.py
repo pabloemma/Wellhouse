@@ -48,8 +48,7 @@ class MyPlot(object):
             i+=1
 
     def DoPlot(self):
-        plt.scatter(self.temp_x,self.temp_y);
-
+        self.ax.scatter(self.temp_x,self.temp_y)
         plt.show()
         plt.pause(0.0001) #Note this correction
 
