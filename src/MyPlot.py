@@ -14,7 +14,8 @@ class MyPlot(object):
 
         #Get start time
         self.start_time = time.time()-5. # start time is programtime minus 5 sec
-        self.max_time = self.start_time +3600.
+        self.time_window = 20.
+        self.max_time = self.start_time +self.time_window
 
 
         plt.ion() ## Note this correction
@@ -39,15 +40,32 @@ class MyPlot(object):
 
     def RunLoop(self,i=0):
         while i <100:
-            self.temp_y = np.random.random();
-            self.temp_x = time.time()
-            self.x.append(self.temp_x);
-            self.y.append(self.temp_y);
+            y = np.random.random();
+            self.SetValues(y)
             time.sleep(.5)
             self.DoPlot()
             i+=1
 
+    def SetValues(self,y):
+        """
+        Sets the x = time and y values for the plot
+        """
+        self.temp_y = y
+        self.temp_x = time.time()
+
+
+
+
+        self.x.append(self.temp_x);
+        self.y.append(self.temp_y);
+
     def DoPlot(self):
+
+        # check if we need to extend the axis
+        if(self.temp_x > self.max_time -5.):
+            self.max_time = self.max_time + self.time_window
+            #reset axis
+            self.SetAxis()
         self.ax.scatter(self.temp_x,self.temp_y)
         plt.show()
         plt.pause(0.0001) #Note this correction
