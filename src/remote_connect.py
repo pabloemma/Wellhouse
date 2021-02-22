@@ -38,6 +38,8 @@ class RemoteConnect(object):
     def ExecuteCommand1(self,checkcmd):
 
         result = os.system(checkcmd)
+        if result == 0: print("You are running")
+        return
 
     def ExecuteCommand(self , command):
 
@@ -65,7 +67,7 @@ if __name__ == '__main__':
     hostip = '192.168.2.149'
     RC=RemoteConnect(hostip)
     RC.CheckRemoteKey()
-    checkcmd = '  ssh -oNumberOfPasswordPrompts=0' + ' pi@' + hostip + '  \"python3 /home/pi/git/Wellhouse/src/wellhouse_control.py\" '
+    checkcmd = '  ssh -oNumberOfPasswordPrompts=0' + ' pi@' + hostip + '  \"python3 /home/pi/git/Wellhouse/src/wellhouse_control.py &\" '
 
     command = "python3 /home/pi/git/Wellhouse/src/wellhouse_control.py "
     RC.ExecuteCommand1(checkcmd)
