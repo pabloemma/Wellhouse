@@ -131,9 +131,12 @@ class WHSERVER(object):
                 if (len(data)>0): 
                     #decode bytes back to string for json
                     temp = data.decode("utf-8")
-                    print('temp',temp)
+                    #print('temp',temp)
                    # convert string back into dictionary
-                    data1 = json.loads(temp)
+                    try:
+                        data1 = json.loads(temp)
+                    except:
+                        break
 
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
