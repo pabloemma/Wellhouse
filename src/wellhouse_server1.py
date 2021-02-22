@@ -137,6 +137,7 @@ class WHSERVER(object):
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])
+
                         self.PutAlarm()
                         
                
@@ -182,8 +183,10 @@ class WHSERVER(object):
         """
         gives alarm when temp too low
         """
-        for k in range(100):
-            print("\a")
+        for k in range(20):
+            os.system('say "Santa Fe we got a problem, wellhouse Temperature is low"')
+
+
         return
 
     def SendAlarm(self,ID,Temp):           
