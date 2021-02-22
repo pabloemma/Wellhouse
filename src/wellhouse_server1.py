@@ -56,7 +56,7 @@ class WHSERVER(object):
         '''
        
         #alarm level , if temperature goes below this value we send an email.
-        self.lowtemp = 38. # below 38 we will send an alarm
+        self.lowtemp = 5. # below 38 we will send an alarm
         self.email = 'pabloemma@gmail.com' #adress for warning
         self.counter = 0 # this counter makes sure that we don't get messages every time.
                          # we do it only every 50 times

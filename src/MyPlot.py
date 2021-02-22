@@ -14,7 +14,7 @@ class MyPlot(object):
 
         #Get start time
         self.start_time = time.time()-5. # start time is programtime minus 5 sec
-        self.time_window = 20.
+        self.time_window = 100.
         self.max_time = self.start_time +self.time_window
 
         self.ymin = ymin
