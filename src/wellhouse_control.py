@@ -23,7 +23,7 @@ if __name__ == '__main__':
         data = WH1.PseudoData()
         print('wellhouse control',data)
         MyPush.PushData(data)
-        time.sleep(2)
+        time.sleep(60)
  
     MyPush.CloseConnection()    
     

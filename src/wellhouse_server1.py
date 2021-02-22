@@ -131,6 +131,7 @@ class WHSERVER(object):
                 if (len(data)>0): 
                     #decode bytes back to string for json
                     temp = data.decode("utf-8")
+                    print('temp',temp)
                    # convert string back into dictionary
                     data1 = json.loads(temp)
 
@@ -150,7 +151,8 @@ class WHSERVER(object):
                     # write to csv file
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
-                    self.output.flush()
+                    self.output.flush() # this replaces the nobuffering in python2. Otherwise we would wait until a certain amount is taken.
+
                     
 
                     
@@ -183,7 +185,7 @@ class WHSERVER(object):
         """
         gives alarm when temp too low
         """
-        for k in range(10):
+        for k in range(2):
 
             os.system('say "Santa Fe we got a problem, wellhouse Temperature is low"')
 
