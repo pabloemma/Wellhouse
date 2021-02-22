@@ -183,8 +183,11 @@ class WHSERVER(object):
         """
         gives alarm when temp too low
         """
-        for k in range(20):
+        for k in range(10):
+
             os.system('say "Santa Fe we got a problem, wellhouse Temperature is low"')
+
+
 
 
         return
