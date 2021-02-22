@@ -22,16 +22,19 @@ import datetime
 import json
 import SendFileMail as SFM
 from pathlib import Path
+import numpy as np
+import MyPlot as MP
+
 
 #import stripper as ST
 
-import numpy as np
+
 #from matplotlib.lines import Line2D
 import matplotlib.pyplot as plt
 import numpy as np
 #import matplotlib.animation as animation
-from  dynplot import dynplot
- 
+
+
 
 
 
@@ -53,19 +56,15 @@ class WHSERVER(object):
         '''
        
         #alarm level , if temperature goes below this value we send an email.
-        self.lowtemp = 0. # below 38 we will send an alarm
+        self.lowtemp = 90. # below 38 we will send an alarm
         self.email = 'pabloemma@gmail.com' #adress for warning
         self.counter = 0 # this counter makes sure that we don't get messages every time.
                          # we do it only every 50 times
         
         
-        #More initalization
-        #window = 100
-        #xmin = time.time()-10.
-        #xmax = time.time()+window
-        #self.dplt = dynplot(ymin=0., ymax=80.,xmin=xmin,xmax=xmax)
-    
-
+        #initalize the plotting
+        self.MPL = MP.MyPlot(ymin=0.,ymax = 100.)
+        self.MPL.SetAxisLabels('Time','Temperature')
 
     def OpenFile(self):
         ''' the default filename is going to be the date of the day
@@ -138,14 +137,15 @@ class WHSERVER(object):
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])
-
+                        self.PutAlarm()
                         
                
                 
                     #plot data
                     temp_time = time.time()
-                    #self.dplt.plot(temp_time,data1['Temp'])
-                    #self.dplt.show(permanent=False)
+
+                    self.MPL.SetValues(data1['Temp'])
+                    self.MPL.DoPlot()
                     # write to csv file
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
@@ -178,7 +178,13 @@ class WHSERVER(object):
         s.connect(("8.8.8.8", 80))
         return s.getsockname()[0]
 
-
+    def PutAlarm(self):
+        """
+        gives alarm when temp too low
+        """
+        for k in range(100):
+            print("\a")
+        return
 
     def SendAlarm(self,ID,Temp):           
         """ this sends an email if Temperature is below the setpoint"""

@@ -8,7 +8,7 @@ import time
 
 class MyPlot(object):
 
-    def __init__(self):
+    def __init__(self,ymin =0.,ymax =100.):
 
     # Initialize plots
 
@@ -17,6 +17,8 @@ class MyPlot(object):
         self.time_window = 20.
         self.max_time = self.start_time +self.time_window
 
+        self.ymin = ymin
+        self.ymax = ymax
 
         plt.ion() ## Note this correction
         self.fig = plt.figure()
@@ -36,9 +38,22 @@ class MyPlot(object):
         """
 
         # set axis
-        self.ax.set(xlim=(self.start_time, self.max_time), ylim=(0., 1.))
+        self.ax.set(xlim=(self.start_time, self.max_time), ylim=(self.ymin,self.ymax))
+    def SetAxisLabels(self,xlab,ylab):
+        """
+        Set labels of axis
+        """
+
+        self.ax.set_xlabel(xlab)
+
+        self.ax.set_ylabel(ylab)
 
     def RunLoop(self,i=0):
+        """
+        Only for test purposes
+        """
+
+
         while i <100:
             y = np.random.random();
             self.SetValues(y)
@@ -64,13 +79,15 @@ class MyPlot(object):
         # check if we need to extend the axis
         if(self.temp_x > self.max_time -5.):
             self.max_time = self.max_time + self.time_window
+
             #reset axis
             self.SetAxis()
-        self.ax.scatter(self.temp_x,self.temp_y)
+
+        self.ax.scatter(self.temp_x,self.temp_y,color ='b')
         plt.show()
         plt.pause(0.0001) #Note this correction
 
 
 if __name__ == '__main__':
-    MyP = MyPlot()
+    MyP = MyPlot(0.,1.)
     MyP.RunLoop()
