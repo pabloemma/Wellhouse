@@ -24,7 +24,8 @@ import SendFileMail as SFM
 from pathlib import Path
 import numpy as np
 import MyPlot as MP
-
+import MyMultiPlot as MMP
+from subprocess import Popen,PIPE
 
 #import stripper as ST
 
@@ -50,7 +51,7 @@ class WHSERVER(object):
     '''
 
 
-    def __init__(self):
+    def __init__(self,Multiplot=False):
         '''
         Constructor
         '''
@@ -61,10 +62,16 @@ class WHSERVER(object):
         self.counter = 0 # this counter makes sure that we don't get messages every time.
                          # we do it only every 50 times
         
-        
+
+        self.Multiplot = Multiplot
         #initalize the plotting
-        self.MPL = MP.MyPlot(ymin=0.,ymax = 100.)
-        self.MPL.SetAxisLabels('Time','Temperature')
+        if(Multiplot):
+            self.MMPL = MMP.MyMultiPlot([0.,0.,990.],[100.,100.,1110.],3 )
+            self.MMPL.SetAxisLabels('Time', ['Temperature', 'Humidity', 'Pressure'])
+
+        else:
+            self.MPL = MP.MyPlot(ymin=0.,ymax = 100.)
+            self.MPL.SetAxisLabels('Time', 'Temperature')
 
     def OpenFile(self):
         ''' the default filename is going to be the date of the day
@@ -97,6 +104,17 @@ class WHSERVER(object):
         self.mysock = socket.socket() # create socket
         myip = '' #usually leave empty
         myport = 5478
+
+    #check if port is used, and if so kill the process
+        process = Popen(["lsof", "-i", ":{0}".format(myport)], stdout=PIPE, stderr=PIPE)
+        stdout, stderr = process.communicate()
+        for process in str(stdout.decode("utf-8")).split("\n")[1:]:
+            data = [x for x in process.split(" ") if x != '']
+            if (len(data) <= 1):
+                continue
+
+            os.kill(int(data[1]), signal.SIGKILL)
+
         self.mysock.bind(('',myport))
         self.mysock.listen(5)
         
@@ -148,9 +166,13 @@ class WHSERVER(object):
                 
                     #plot data
                     temp_time = time.time()
-
-                    self.MPL.SetValues(data1['Temp'])
-                    self.MPL.DoPlot()
+                    if(self.Multiplot):
+                        y=[data1['Temp'],data1['Humidity'],data1['Pressure']]
+                        self.MMPL.SetValues(y)
+                        self.MMPL.DoPlots()
+                    else:
+                        self.MPL.SetValues(data1['Temp'])
+                        self.MPL.DoPlot()
                     # write to csv file
                     myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
                     self.output.write(myline)
@@ -222,7 +244,7 @@ class WHSERVER(object):
         
             
 if __name__ == '__main__':
-    tel =WHSERVER()
+    tel =WHSERVER(Multiplot=True)
     tel.OpenFile()
     tel.Establish()
     tel.Looping()

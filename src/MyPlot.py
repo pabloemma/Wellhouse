@@ -10,7 +10,7 @@ import sys
 
 class MyPlot(object):
 
-    def __init__(self,ymin =0.,ymax =100.,num_plot=1):
+    def __init__(self,ymin =0.,ymax =100.):
 
     # Initialize plots
 
@@ -26,16 +26,7 @@ class MyPlot(object):
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(1,1,1)
 
-        # we have more than one plot (can only do 4 at this time)
-        if(num_plot > 4):
-            print('Cannot do more than 4 plots, exiting \n')
-            sys.exit(0)
-        if(num_plot > 1):
-            self.num_plot = num_plot
-            self.ax_ar = []
-            self.fig_ar = plt.figure()
-            for k in range(1,num_plot+1):   #arrange in grid of 2 x 2
-                self.ax_ar[k] = self.fig.add_subplot(2, 2, k)
+
 
     # set axis
         self.SetAxis()
