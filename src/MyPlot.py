@@ -1,14 +1,16 @@
 import matplotlib.pyplot as plt
+import matplotlib.dates as md
 import numpy as np
 import time
-
+import datetime as dt
+import sys
 
 
 
 
 class MyPlot(object):
 
-    def __init__(self,ymin =0.,ymax =100.):
+    def __init__(self,ymin =0.,ymax =100.,num_plot=1):
 
     # Initialize plots
 
@@ -24,8 +26,18 @@ class MyPlot(object):
         self.fig = plt.figure()
         self.ax = self.fig.add_subplot(1,1,1)
 
+        # we have more than one plot (can only do 4 at this time)
+        if(num_plot > 4):
+            print('Cannot do more than 4 plots, exiting \n')
+            sys.exit(0)
+        if(num_plot > 1):
+            self.num_plot = num_plot
+            self.ax_ar = []
+            self.fig_ar = plt.figure()
+            for k in range(1,num_plot+1):   #arrange in grid of 2 x 2
+                self.ax_ar[k] = self.fig.add_subplot(2, 2, k)
 
-        # set axis
+    # set axis
         self.SetAxis()
 
         self.x=list()
@@ -82,8 +94,14 @@ class MyPlot(object):
 
             #reset axis
             self.SetAxis()
+        #dates = dt.datetime.fromtimestamp(self.temp_x)
 
         self.ax.scatter(self.temp_x,self.temp_y,color ='b')
+        #self.ax.scatter(dates,self.temp_y,color ='b')
+
+        #self.ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
+        #plt.xticks(rotation=90)
+
         plt.show()
         plt.pause(0.0001) #Note this correction
 
@@ -91,3 +109,4 @@ class MyPlot(object):
 if __name__ == '__main__':
     MyP = MyPlot(0.,1.)
     MyP.RunLoop()
+
