@@ -20,6 +20,7 @@ import time
 import os
 import datetime
 import json
+import signal
 import SendFileMail as SFM
 from pathlib import Path
 import numpy as np
@@ -112,7 +113,7 @@ class WHSERVER(object):
             data = [x for x in process.split(" ") if x != '']
             if (len(data) <= 1):
                 continue
-
+            print('killing process ',data[1], ' of user ',data[2])
             os.kill(int(data[1]), signal.SIGKILL)
 
         self.mysock.bind(('',myport))
