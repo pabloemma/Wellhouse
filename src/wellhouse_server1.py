@@ -119,7 +119,7 @@ class WHSERVER(object):
         self.mysock.bind(('',myport))
         self.mysock.listen(5)
         
-         # start listening
+          # start listening
         
     def Looping(self):
         '''
