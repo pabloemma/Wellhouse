@@ -67,7 +67,7 @@ class WHSERVER(object):
         self.Multiplot = Multiplot
         #initalize the plotting
         if(Multiplot):
-            self.MMPL = MMP.MyMultiPlot([0.,0.,990.],[100.,100.,1110.],3 )
+            self.MMPL = MMP.MyMultiPlot([0.,0.,755.],[100.,100.,775.],3 )
             self.MMPL.SetAxisLabels('Time', ['Temperature', 'Humidity', 'Pressure'])
 
         else:
@@ -135,9 +135,8 @@ class WHSERVER(object):
 
 
  # strip frac seconds
-           
 
-
+        temp_F = lambda x: (x * 1.8)+32.
 
 
 
@@ -156,7 +155,8 @@ class WHSERVER(object):
                         data1 = json.loads(temp)
                     except:
                         break
-
+                    # convert temperature
+                    data1['Temp'] = temp_F(data1['temp'])
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])

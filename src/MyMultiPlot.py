@@ -106,6 +106,6 @@ class MyMultiPlot(object):
 
 
 if __name__ == '__main__':
-    MyP = MyPlot(0., 1.)
+    MyP = MyMultiPlot(0., 1.)
     MyP.RunLoop()
 
