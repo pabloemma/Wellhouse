@@ -27,6 +27,7 @@ import numpy as np
 import MyPlot as MP
 import MyMultiPlot as MMP
 from subprocess import Popen,PIPE
+import math
 
 #import stripper as ST
 
@@ -95,8 +96,18 @@ class WHSERVER(object):
             self.output.flush()
              
             
-        
-        
+    def CalculateDewPoint(self,Humid,Temp):
+        b = 17.62
+        c = 243.12
+
+
+        mygamma = (b * Temp) / (c + Temp) + math.log(Humid / 100.0)
+        dewpoint = (c * mygamma) / (b - mygamma)
+        #print(dewpoint)
+        return dewpoint
+
+
+
     def Establish(self):
         '''
         establish connection with Client
@@ -157,6 +168,7 @@ class WHSERVER(object):
                         break
                     # convert temperature
                     data1['Temp'] = temp_F(data1['Temp'])
+                    data1['Dew']  =self.CalculateDewPoint(data1['Humidity'],data1['Temp'])
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])
