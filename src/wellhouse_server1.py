@@ -156,7 +156,7 @@ class WHSERVER(object):
                     except:
                         break
                     # convert temperature
-                    data1['Temp'] = temp_F(data1['temp'])
+                    data1['Temp'] = temp_F(data1['Temp'])
                     #check for the temperature and send alarm if temperature goes below value defined in the init part
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])
