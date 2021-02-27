@@ -109,6 +109,8 @@ class Tmeas(object):
 
 if __name__ == "__main__":
     TM = Tmeas(0)
-    TM.Measure
+    while 1:
+        TM.Measure
+        time.sleep(10)
 
 
