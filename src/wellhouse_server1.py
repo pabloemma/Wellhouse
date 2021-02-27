@@ -125,7 +125,7 @@ class WHSERVER(object):
             if (len(data) <= 1):
                 continue
             print('killing process ',data[1], ' of user ',data[2])
-            os.kill(int(data[1]), signal.SIGKILL)
+            #os.kill(int(data[1]), signal.SIGKILL)
 
         self.mysock.bind(('',myport))
         self.mysock.listen(5)
