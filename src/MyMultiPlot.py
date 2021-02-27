@@ -12,7 +12,7 @@ class MyMultiPlot(object):
 
         # Initialize plots
         # currently at the most 4 plots
-        max_plot = 4
+        max_plot = 5
         self.num_plot = num_plot
         # Get start time
         self.start_time = time.time() - 5.  # start time is programtime minus 5 sec
@@ -21,7 +21,7 @@ class MyMultiPlot(object):
 
         self.ymin = ymin #list for different plots
         self.ymax = ymax
-        self.temp_y = [0.,0.,0.]
+        self.temp_y = [0.,0.,0.,0.,0.]
 
         plt.ion()  ## Note this correction
         #check for numbers
@@ -29,7 +29,7 @@ class MyMultiPlot(object):
             print('can only do ', max_plot,' number of plots \n')
             sys.exit(0)
 
-        self.fig, self.axarr = plt.subplots(self.num_plot,1,sharex=True)
+        self.fig, self.axarr = plt.subplots(self.num_plot,1,sharex=True,figsize=(10,8))
 
 
         self.x = list() #always time
@@ -50,7 +50,7 @@ class MyMultiPlot(object):
 
         # set axis
         for k in range(self.num_plot):
-            self.axarr[k].set(xlim=(self.start_time, self.max_time), ylim=(self.ymin[k], self.ymax[k]))
+            self.axarr[k].set(xlim=(dt.datetime.fromtimestamp(self.start_time), dt.datetime.fromtimestamp(self.max_time)), ylim=(self.ymin[k], self.ymax[k]))
 
     def SetAxisLabels(self, xlab, ylab):
         """
@@ -77,7 +77,10 @@ class MyMultiPlot(object):
         """
         Sets the x = time and y values for the plot
         """
-        self.temp_x = time.time()
+        #self.temp_x = time.time()
+
+        self.temp_x = dt.datetime.fromtimestamp((time.time()))
+
         self.x.append(self.temp_x);
         for k in range(self.num_plot):
             self.temp_y[k] = y[k]
@@ -85,22 +88,27 @@ class MyMultiPlot(object):
             self.y[k].append(y[k]);
 
     def DoPlots(self):
+        self.temp_x = (time.time())
 
         # check if we need to extend the axis
-        if (self.temp_x > self.max_time - 5.):
+        if (dt.datetime.fromtimestamp(self.temp_x) > dt.datetime.fromtimestamp(self.max_time - 5.)):
             self.max_time = self.max_time + self.time_window
 
             # reset axis
             self.SetAxis()
         # dates = dt.datetime.fromtimestamp(self.temp_x)
-        col=['b','r','g']
+        col=['b','r','g','b','r']
         for k in range(self.num_plot):
-            self.axarr[k].scatter(self.temp_x, self.temp_y[k], color=col[k])
+            #self.axarr[k].scatter(self.temp_x, self.temp_y[k], color=col[k])
+            self.axarr[k].plot_date(dt.datetime.fromtimestamp(self.temp_x), self.temp_y[k], color=col[k])
+
+            self.axarr[k].xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
+            plt.setp(self.axarr[k].get_xticklabels(),rotation=45,horizontalalignment='right')
         # self.ax.scatter(dates,self.temp_y,color ='b')
 
         # self.ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
         # plt.xticks(rotation=90)
-        plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
+        #plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
         plt.show()
         plt.pause(0.0001)  # Note this correction
 

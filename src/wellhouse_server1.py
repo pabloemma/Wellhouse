@@ -68,8 +68,8 @@ class WHSERVER(object):
         self.Multiplot = Multiplot
         #initalize the plotting
         if(Multiplot):
-            self.MMPL = MMP.MyMultiPlot([0.,0.,755.],[100.,100.,775.],3 )
-            self.MMPL.SetAxisLabels('Time', ['Temperature', 'Humidity', 'Pressure'])
+            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2250.,0.],[100.,100.,775.,2350.,100.],5 )
+            self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [mm HG]','Altitude [m]','Dew [F]'])
 
         else:
             self.MPL = MP.MyPlot(ymin=0.,ymax = 100.)
@@ -91,7 +91,7 @@ class WHSERVER(object):
         else :
             self.output = open(filename,'w')
             # write the top line for the columns
-            myline = 'time , ID ,Temp, Humidity,Pressure,Altitude \n'
+            myline = 'time , ID ,Temp, Humidity,Pressure,Altitude , Dewpoint\n'
             self.output.write(myline)
             self.output.flush()
              
@@ -180,14 +180,15 @@ class WHSERVER(object):
                     #plot data
                     temp_time = time.time()
                     if(self.Multiplot):
-                        y=[data1['Temp'],data1['Humidity'],data1['Pressure']]
+
+                        y=[data1['Temp'],data1['Humidity'],data1['Pressure'],data1['Altitude'] , data1['Dew']]
                         self.MMPL.SetValues(y)
                         self.MMPL.DoPlots()
                     else:
                         self.MPL.SetValues(data1['Temp'])
                         self.MPL.DoPlot()
                     # write to csv file
-                    myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+'\n'
+                    myline = str(int(time.time()))+','+str(data1['ID'])+','+str(data1['Temp'])+','+str(data1['Humidity'])+','+str(data1['Pressure'])+','+str(data1['Altitude'])+','+str(data1['Dew'])+'\n'
                     self.output.write(myline)
                     self.output.flush() # this replaces the nobuffering in python2. Otherwise we would wait until a certain amount is taken.
 

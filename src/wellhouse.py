@@ -63,7 +63,7 @@ class Tmeas(object):
         # bme280 = adafruit_bme280.Adafruit_BME280_SPI(spi, bme_cs)
 
         # change this to match the location's pressure (hPa) at sea level
-        self.bme280.sea_level_pressure = 1013.25
+        self.bme280.sea_level_pressure = 1006.25
         
         
             
