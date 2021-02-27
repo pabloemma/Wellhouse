@@ -23,7 +23,7 @@ class Tmeas(object):
         1: Guest House
    
          '''
-        self.testing = True  # this is a flag to test the program without sensor
+        self.testing = False  # this is a flag to test the program without sensor
                              #will do the connection to the server and send pseudo data
  
          
