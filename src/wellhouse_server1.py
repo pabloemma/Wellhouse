@@ -68,7 +68,7 @@ class WHSERVER(object):
         self.Multiplot = Multiplot
         #initalize the plotting
         if(Multiplot):
-            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2250.,0.],[100.,100.,775.,2350.,100.],5 )
+            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2150.,0.],[100.,100.,775.,2350.,100.],5 )
             self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]','Altitude [m]','Dew [F]'])
 
         else:
@@ -166,7 +166,8 @@ class WHSERVER(object):
                     try:
                         data1 = json.loads(temp)
                     except:
-                        break
+                        print('problem with jason data \n')
+                        continue
                     # convert temperature
                     data1['Temp'] = temp_F(data1['Temp'])
                     data1['Dew']  =self.CalculateDewPoint(data1['Humidity'],data1['Temp'])
