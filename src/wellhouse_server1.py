@@ -59,7 +59,7 @@ class WHSERVER(object):
         '''
        
         #alarm level , if temperature goes below this value we send an email.
-        self.lowtemp = 5. # below 38 we will send an alarm
+        self.lowtemp = 36. # below 38 we will send an alarm
         self.email = 'pabloemma@gmail.com' #adress for warning
         self.counter = 0 # this counter makes sure that we don't get messages every time.
                          # we do it only every 50 times
@@ -69,7 +69,7 @@ class WHSERVER(object):
         #initalize the plotting
         if(Multiplot):
             self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2250.,0.],[100.,100.,775.,2350.,100.],5 )
-            self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [mm HG]','Altitude [m]','Dew [F]'])
+            self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]','Altitude [m]','Dew [F]'])
 
         else:
             self.MPL = MP.MyPlot(ymin=0.,ymax = 100.)
