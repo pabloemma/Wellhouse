@@ -91,7 +91,7 @@ class WHSERVER(object):
         else :
             self.output = open(filename,'w')
             # write the top line for the columns
-            myline = 'time , ID ,Temp, Humidity,Pressure,Altitude , Dewpoint\n'
+            myline = 'time,ID,Temp,Humidity,Pressure,Altitude,Dewpoint\n'
             self.output.write(myline)
             self.output.flush()
              
@@ -175,7 +175,7 @@ class WHSERVER(object):
                     if(data1['Temp'] < self.lowtemp):
                         self.SendAlarm(data1['ID'],data1['Temp'])
 
-                        self.PutAlarm()
+                        #self.PutAlarm()
                         
                
                 

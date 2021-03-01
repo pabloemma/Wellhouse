@@ -20,7 +20,7 @@ class MyMultiPlot(object):
         else:
             self.start_time=start_time
 
-        self.time_window = 100.
+        self.time_window = 43200. #12 hour time window
         self.max_time = self.start_time + self.time_window
 
         self.ymin = ymin #list for different plots
@@ -95,9 +95,9 @@ class MyMultiPlot(object):
         self.temp_x = (time.time())
 
         # check if we need to extend the axis
-        if (dt.datetime.fromtimestamp(self.temp_x) > dt.datetime.fromtimestamp(self.max_time - 5.)):
-            self.max_time = self.max_time + self.time_window
-
+        if (dt.datetime.fromtimestamp(self.temp_x) > dt.datetime.fromtimestamp(self.max_time - 70.)):
+            self.max_time = self.max_time + 3600.
+            self.start_time = self.start_time+3600.  # shift time window by one hour
             # reset axis
             self.SetAxis()
         # dates = dt.datetime.fromtimestamp(self.temp_x)
