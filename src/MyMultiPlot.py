@@ -8,14 +8,18 @@ import sys
 
 class MyMultiPlot(object):
 
-    def __init__(self, ymin,ymax,num_plot=0):
+    def __init__(self, ymin,ymax,num_plot=0, start_time=0.):
 
         # Initialize plots
         # currently at the most 4 plots
         max_plot = 5
         self.num_plot = num_plot
         # Get start time
-        self.start_time = time.time() - 5.  # start time is programtime minus 5 sec
+        if start_time==0.:
+            self.start_time = time.time() - 5.  # start time is programtime minus 5 sec
+        else:
+            self.start_time=start_time
+
         self.time_window = 100.
         self.max_time = self.start_time + self.time_window
 
