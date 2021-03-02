@@ -68,8 +68,8 @@ class WHSERVER(object):
         self.Multiplot = Multiplot
         #initalize the plotting
         if(Multiplot):
-            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2050.,0.],[100.,100.,795.,2350.,100.],5 )
-            self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]','Altitude [m]','Dew [F]'])
+            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,980.,0.],[100.,100.,795.,1100.,100.],5 )
+            self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]','Barometric P [hPa]','Dew [F]'])
 
         else:
             self.MPL = MP.MyPlot(ymin=0.,ymax = 100.)
@@ -106,6 +106,13 @@ class WHSERVER(object):
         #print(dewpoint)
         return dewpoint
 
+    def CalculateSeaLevelP(self,press,temp,alti):
+        """ values in SI units """
+        term1 = .0065*alti
+        term2 = temp+term1+273.15
+        term3 = (1-term1/term2)
+        term4 = pow(term3,-5.257)
+        return press*term4
 
 
     def Establish(self):
@@ -181,9 +188,12 @@ class WHSERVER(object):
                 
                     #plot data
                     temp_time = time.time()
+
+                    print(self.CalculateSeaLevelP(data1['Pressure'],data1['Temp'],2281.1))
+
                     if(self.Multiplot):
 
-                        y=[data1['Temp'],data1['Humidity'],data1['Pressure'],data1['Altitude'] , data1['Dew']]
+                        y=[data1['Temp'],data1['Humidity'],data1['Pressure'],self.CalculateSeaLevelP(data1['Pressure'],data1['Temp'],2281.1), data1['Dew']]
                         self.MMPL.SetValues(y)
                         self.MMPL.DoPlots()
                     else:
