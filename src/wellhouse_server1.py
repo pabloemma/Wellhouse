@@ -68,7 +68,7 @@ class WHSERVER(object):
         self.Multiplot = Multiplot
         #initalize the plotting
         if(Multiplot):
-            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2150.,0.],[100.,100.,775.,2350.,100.],5 )
+            self.MMPL = MMP.MyMultiPlot([0.,0.,755.,2050.,0.],[100.,100.,795.,2350.,100.],5 )
             self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]','Altitude [m]','Dew [F]'])
 
         else:
@@ -127,7 +127,7 @@ class WHSERVER(object):
             print('killing process ',data[1], ' of user ',data[2])
             os.kill(int(data[1]), signal.SIGKILL)
             time.sleep(60)
-
+        self.mysock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.mysock.bind(('',myport))
         self.mysock.listen(5)
         

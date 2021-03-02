@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.dates as md
+from matplotlib.ticker import (MultipleLocator, AutoMinorLocator)
 import numpy as np
 import time
 import datetime as dt
@@ -105,6 +106,11 @@ class MyMultiPlot(object):
         for k in range(self.num_plot):
             #self.axarr[k].scatter(self.temp_x, self.temp_y[k], color=col[k])
             self.axarr[k].plot_date(dt.datetime.fromtimestamp(self.temp_x), self.temp_y[k], color=col[k])
+            # add grid
+            self.axarr[k].grid(True,linewidth=.2)
+            self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(4))
+            if(k <2) or k==4:
+                self.axarr[k].yaxis.set_major_locator(MultipleLocator(20))
 
             self.axarr[k].xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
             plt.setp(self.axarr[k].get_xticklabels(),rotation=45,horizontalalignment='right')
