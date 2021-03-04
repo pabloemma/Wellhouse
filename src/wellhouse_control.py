@@ -23,7 +23,7 @@ if __name__ == '__main__':
         data = WH1.Measure()
         print('wellhouse control',data)
         MyPush.PushData(data)
-        time.sleep(600)
+        time.sleep(20)
  
     MyPush.CloseConnection()    
     

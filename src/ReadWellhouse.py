@@ -3,8 +3,9 @@ Will read the wellhouse files and display
 """
 
 import pandas as PD
-import MyMultiPlot as MMP
+import MultiPlot as MMP
 import time
+import datetime as dt
 
 class WellhouseRead(object):
 
@@ -24,29 +25,54 @@ class WellhouseRead(object):
         # this is a bit clumsier than I wanted, but this way it interfaces with multiplots
         for col in self.mydata.columns:
             print(col)
-        self.time = self.mydata['time ']
+        self.time = self.mydata['time']
         self.Temp=self.mydata['Temp']
-        self.Humi =self.mydata[' Humidity']
+        self.Humi =self.mydata['Humidity']
         self.Press=self.mydata['Pressure']
-        self.Alti=self.mydata['Altitude ']
-        self.Dew =self.mydata[' Dewpoint']
+        self.Alti=self.mydata['Altitude']
+        self.Dew =self.mydata['Dewpoint']
 
-        self.MMPL = MMP.MyMultiPlot([0., 0., 755., 2150., 0.], [100., 100., 775., 2350., 100.], 5,start_time=self.time[0]-5)
+    def SetAxisLimits(self,ymin,ymax):
+        self.ymin = []
+        self.ymax = []
+        self.xmin = self.time[0]-60.
+        self.xmax = self.time[len(self.time)-1]
+        for k in range(len(ymin)):
+            self.ymin.append(ymin[k])
+            self.ymax.append(ymax[k])
+
+        self.MMPL.SetAxisLimit(self.xmin,self.xmax,self.ymin,self.ymax)
+
+    def SetupPlotSystem(self):
+
+        self.MMPL = MMP.MultiPlot()
+        # set the number of plots
+        numpl=5
+        self.MMPL.SetNumberOfPlots(numpl)
+        self.MMPL.SetupPlots()
         self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]', 'Altitude [m]', 'Dew [F]'])
 
     def DoPlots(self):
 
-        for k in range(len(self.Temp)):
-            y = [self.Temp[k],self.Humi[k],self.Press[k],self.Alti[k],self.Dew[k]]
 
-            self.MMPL.SetValues(y)
-        self.MMPL.DoPlots()
+        x = self.time
+        y = [self.Temp,self.Humi,self.Press,self.Alti,self.Dew]
+
+        self.MMPL.DoPlots(x,y)
         time.sleep(60)
 
 
 if __name__ == '__main__':
     dir = '/Users/klein/wellhousefiles/'
-    filename = dir +'2021-02-28wellhouse.csv'
+    filename = dir +'2021-03-03wellhouse.csv'
 
     WR = WellhouseRead(filename)
+    WR.SetupPlotSystem()
+
+
+    ymin =[0., 0., 755., 980., 0.]
+    ymax = [100., 100., 795., 1100., 100.]
+
+
+    WR.SetAxisLimits(ymin,ymax)
     WR.DoPlots()

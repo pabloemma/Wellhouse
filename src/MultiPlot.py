@@ -10,6 +10,7 @@ import numpy as np
 import time
 import datetime as dt
 import sys
+import pandas
 class MultiPlot(object):
 
 
@@ -22,6 +23,7 @@ class MultiPlot(object):
         self.ymax = []
         self.start_time = 0.
         self.max_time = 0.
+        self.temp_y = [0.,0.,0.,0.,0.]
 
 
 
@@ -36,12 +38,13 @@ class MultiPlot(object):
         """
 
 
-        if(self.num_plot <5): # we just do one column
+        if(self.num_plot <9): # we just do one column
             self.fig,self.axarr = plt.subplots(self.num_plot,1,sharex=True,figsize=(10,8))
-        elif (self.num_plot >4 ) and (self.num_plot < 9 ):
-            ncols=2
-            nrows = 4
-            self.fig, self.axarr = plt.subplots(nrows=nrows,ncols=ncols, sharex=True, figsize=(10, 8))
+        #elif (self.num_plot > 4 ) and (self.num_plot < 9 ):
+        #    ncols=2
+        #    nrows = 4
+        #    self.fig, self.axarr = plt.subplots(nrows=nrows,ncols=ncols, sharex=True, figsize=(10, 8))
+         #   print(self.axarr)  #commented out since I would need to change the ndarra treatment to twodim treatment
 
         else:
             print(' more than 8 plots not iplemented')
@@ -81,3 +84,34 @@ class MultiPlot(object):
         for k in range(self.num_plot):
             self.ymin.append(ymin[k])
             self.ymax.append(ymax[k])
+
+
+    def DoPlots(self,x,y):
+
+        col=['b','r','g','b','r']
+        #convert unix time to regualr time first
+        temp=[]
+
+        for k in range(0,len(x)):
+             temp.append(dt.datetime.fromtimestamp(x[k])) #hopefully converts time to datetime
+
+
+        for k in range(self.num_plot):
+            #self.axarr[k].scatter(self.temp_x, self.temp_y[k], color=col[k])
+            self.axarr[k].plot_date(temp, y[k], color=col[k])
+            #self.axarr[k].plot(x, y[k], color=col[k])
+            # add grid
+            self.axarr[k].grid(True,linewidth=.2)
+            self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(4))
+            if(k <2) or k==4:
+                self.axarr[k].yaxis.set_major_locator(MultipleLocator(20))
+
+            self.axarr[k].xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
+            plt.setp(self.axarr[k].get_xticklabels(),rotation=45,horizontalalignment='right')
+        # self.ax.scatter(dates,self.temp_y,color ='b')
+
+        # self.ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
+        # plt.xticks(rotation=90)
+        #plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
+        plt.show()
+        plt.pause(0.0001)  # Note this correction

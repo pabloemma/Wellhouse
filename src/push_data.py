@@ -39,6 +39,7 @@ class Push(object):
         '''
 	
  	    # now add the ip to the data buffer and pack into a json data format
+        print('push_data',databuff)
         databuff['IP']=self.ip
         databuffer = json.dumps(databuff)
 

@@ -161,7 +161,7 @@ class WHSERVER(object):
 
 
         while True:
-            try:
+             try:
             # wait for data
                 data = conn.recv(1024)
             #if not data: break
@@ -204,6 +204,10 @@ class WHSERVER(object):
                     self.output.write(myline)
                     self.output.flush() # this replaces the nobuffering in python2. Otherwise we would wait until a certain amount is taken.
 
+                    if self.FlushTime():
+                        self.output.close()
+                        print("it is close to midnight, exiting")
+                        sys.exit(0)
                     
 
                     
@@ -212,7 +216,7 @@ class WHSERVER(object):
                     #self.mysock.close()
                 else:
                     break
-            except (KeyboardInterrupt, SystemExit):
+             except (KeyboardInterrupt, SystemExit):
                 print( "got interrupt")
                 self.CloseAll()        
                 #self.scope.emitter(int(data))
@@ -231,6 +235,24 @@ class WHSERVER(object):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         s.connect(("8.8.8.8", 80))
         return s.getsockname()[0]
+
+
+
+    def FlushTime(self):
+
+        """
+        checks time and if its close tp midnight returns True
+        """
+        timelimit = 23 * 60. + 45  # this is how many minutes are to 23:45
+
+        b = datetime.datetime.now()
+        # fill in tuple
+        a = b.timetuple()
+        current_minute = a[3] * 60. + a[4]
+        if (current_minute > timelimit):
+            return True
+        else:
+            return False
 
     def PutAlarm(self):
         """
@@ -264,7 +286,8 @@ class WHSERVER(object):
         
         return
         
-        
+
+
         
         
         
