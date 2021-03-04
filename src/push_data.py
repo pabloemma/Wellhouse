@@ -39,7 +39,6 @@ class Push(object):
         '''
 	
  	    # now add the ip to the data buffer and pack into a json data format
-        print('push_data',databuff)
         databuff['IP']=self.ip
         databuffer = json.dumps(databuff)
 
@@ -70,7 +69,7 @@ class Push(object):
         self.mysocket.close()
          
 if __name__ == '__main__':
-    ip_server = '192.168.2.24' # change for apporpitae server
+    ip_server = '192.168.2.23' # change for apporpitae server
     server_port = 5478
     
     MyPush = Push(ip_server,server_port)
