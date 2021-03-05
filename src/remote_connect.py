@@ -1,3 +1,6 @@
+#/usr/bin/env python3
+
+
 """
 Class to connect to remote machine and execute the desired command
 You need to make sure that you have a public ssh key on the remote machine.
