@@ -7,9 +7,12 @@
 import time
 import wellhouse as WH
 import push_data as PD
+import sys
 if __name__ == '__main__':
     #establish connection
-    ip_server = '192.168.2.24' # change for apporpitae server this is andi airbook
+    print("hello",sys.argv[0],"second argf",sys.argv[1])
+    ip_server = sys.argv[1]
+    #ip_server = '192.168.2.24' # change for apporpitae server this is andi airbook
     #ip_server = '192.168.2.41' # change for apporpitae server
     server_port = 5478
     # serial connection device
@@ -21,9 +24,9 @@ if __name__ == '__main__':
     WH1 = WH.Tmeas(0)
     while 1:
         data = WH1.Measure()
-        print('wellhouse control',data)
+        print('wellhouse control', data)
         MyPush.PushData(data)
         time.sleep(300)
- 
+
     MyPush.CloseConnection()    
     
