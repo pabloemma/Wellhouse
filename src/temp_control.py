@@ -26,6 +26,10 @@ print("dodn")
 #stdout, stderr = client_process.communicate()
 
 #if we die restart the script:
+# but only for 10 counts
+#count = 0
+#while 1:
+
 print("restart the script")
 os.execv("/usr/local/bin/python3",["/usr/local/bin/python3","temp_control.py"])
 

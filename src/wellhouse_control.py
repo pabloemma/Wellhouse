@@ -9,7 +9,7 @@ import wellhouse as WH
 import push_data as PD
 if __name__ == '__main__':
     #establish connection
-    ip_server = '192.168.2.23' # change for apporpitae server this is andi airbook
+    ip_server = '192.168.2.24' # change for apporpitae server this is andi airbook
     #ip_server = '192.168.2.41' # change for apporpitae server
     server_port = 5478
     # serial connection device
