@@ -64,7 +64,7 @@ class WellhouseRead(object):
 
 if __name__ == '__main__':
     dir = '/Users/klein/wellhousefiles/'
-    filename = dir +'2021-03-03wellhouse.csv'
+    filename = dir +'2021-03-04wellhouse.csv'
 
     WR = WellhouseRead(filename)
     WR.SetupPlotSystem()
