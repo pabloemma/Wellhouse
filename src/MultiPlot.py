@@ -118,6 +118,6 @@ class MultiPlot(object):
         # plt.xticks(rotation=90)
         #plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
         plt.savefig(self.mydir+'/wellhousefiles/test.png')
-        plt.show(block=False)
+        plt.show(block=True)
         # now save the picture as a png fiile
         plt.pause(0.0001)  # Note this correction

@@ -70,7 +70,7 @@ if __name__ == '__main__':
     hostip = '192.168.2.127'
     RC=RemoteConnect(hostip)
     RC.CheckRemoteKey()
-    checkcmd = '  ssh -oNumberOfPasswordPrompts=0' + ' pi@' + hostip + '  \"python3 /home/pi/git/Wellhouse/src/wellhouse_control.py 192.168.2.24 &\" '
+    checkcmd = '  ssh -oNumberOfPasswordPrompts=0' + ' pi@' + hostip + '  \"python3 /home/pi/git/Wellhouse/src/wellhouse_control.py 192.168.2.23 &\" '
     RC.ExecuteCommand1(checkcmd)
     #command = "python3 /home/pi/git/Wellhouse/src/wellhouse_control.py & "
     #RC.ExecuteCommand(command)
