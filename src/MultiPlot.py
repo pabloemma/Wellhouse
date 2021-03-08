@@ -11,6 +11,7 @@ import time
 import datetime as dt
 import sys
 import pandas
+import os
 class MultiPlot(object):
 
 
@@ -24,6 +25,9 @@ class MultiPlot(object):
         self.start_time = 0.
         self.max_time = 0.
         self.temp_y = [0.,0.,0.,0.,0.]
+
+        # create universal home dir
+        self.mydir = os.path.expanduser('~')
 
 
 
@@ -113,5 +117,7 @@ class MultiPlot(object):
         # self.ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
         # plt.xticks(rotation=90)
         #plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
-        plt.show()
+        plt.savefig(self.mydir+'/wellhousefiles/test.png')
+        plt.show(block=False)
+        # now save the picture as a png fiile
         plt.pause(0.0001)  # Note this correction
