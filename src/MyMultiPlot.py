@@ -5,6 +5,7 @@ import numpy as np
 import time
 import datetime as dt
 import sys
+import os
 
 
 class MyMultiPlot(object):
@@ -15,13 +16,15 @@ class MyMultiPlot(object):
         # currently at the most 4 plots
         max_plot = 5
         self.num_plot = num_plot
+        self.mydir = os.path.expanduser('~')
+
         # Get start time
         if start_time==0.:
             self.start_time = time.time() - 5.  # start time is programtime minus 5 sec
         else:
             self.start_time=start_time
 
-        self.time_window = 43200. #12 hour time window
+        self.time_window = 43200. #6 hour time window
         self.max_time = self.start_time + self.time_window
 
         self.ymin = ymin #list for different plots
@@ -107,7 +110,8 @@ class MyMultiPlot(object):
             #self.axarr[k].scatter(self.temp_x, self.temp_y[k], color=col[k])
             self.axarr[k].plot_date(dt.datetime.fromtimestamp(self.temp_x), self.temp_y[k], color=col[k])
             # add grid
-            self.axarr[k].grid(True,linewidth=.2)
+            self.axarr[k].grid(True, linewidth=.2)
+
             self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(4))
             if(k <2) or k==4:
                 self.axarr[k].yaxis.set_major_locator(MultipleLocator(20))
@@ -119,8 +123,12 @@ class MyMultiPlot(object):
         # self.ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
         # plt.xticks(rotation=90)
         #plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
-        plt.show(block=True)
+
+        plt.savefig(self.mydir + '/wellhousefiles/test.png')
+
+        plt.show(block=False)
         plt.pause(0.0001)  # Note this correction
+
 
 
 if __name__ == '__main__':
