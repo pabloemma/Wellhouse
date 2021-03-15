@@ -11,8 +11,8 @@ import os
 print("starting wellhouse server")
 
 #nonblocking call with Popen
-workdir ='/Users/klein/NetBeansProjects/Wellhouse/src/'
-server_process = subprocess.Popen(["/usr/local/bin/python3", workdir+"wellhouse_server1.py"],close_fds=True)
+workdir ='/home/klein/PycharmProjects/Wellhouse/src/'
+server_process = subprocess.Popen(["/usr/bin/X11/python3", workdir+"wellhouse_server1.py"],close_fds=True)
 #print(server_process)
 
 print("wellhouse_server is running")
@@ -23,7 +23,7 @@ print("wellhouse_server is running")
 time.sleep(10)
 print("starting up the remote connect")
 #blocking call with call
-client_process = subprocess.call(["/usr/local/bin/python3", workdir+"remote_connect.py" ])
+client_process = subprocess.call(["/usr/bin/X11/python3", workdir+"remote_connect.py" ])
 print("dodn")
 #stdout, stderr = client_process.communicate()
 
@@ -35,7 +35,7 @@ print("dodn")
 #lets make sure we don't have too many counts
 # check if file exitst
 
-with open('/Users/klein/wellhousefiles/countloop.txt','r+') as f:
+with open('/home/klein/wellhousefiles/countloop.txt','r+') as f:
     text = f.read()
     newtext= int(text)+1
     if(newtext > 10):
