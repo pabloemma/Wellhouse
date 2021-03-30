@@ -5,16 +5,40 @@ Will read the wellhouse files and display
 import pandas as PD
 import MultiPlot as MMP
 import time
+import argparse as argp  # we want to use CLI
+import textwrap
 import datetime as dt
 
 class WellhouseRead(object):
 
-    def __init__(self,filename):
+    def __init__(self):
+
+        self.GetArguments()
+        self.ReadCSV(self.inputfile)
+
+    def GetArguments(self):
+        """
+        this method deals with arguments parsed
+        """
+        # instantiate the parser
+        parser = argp.ArgumentParser(
+            prog='test_speed1',
+            formatter_class=argp.RawDescriptionHelpFormatter,
+            epilog=textwrap.dedent('''
+             
 
 
-        self.ReadCSV(filename)
+              '''))
 
+        # now we build up the different args we can have
+        parser.add_argument("-f", "--filename", help="Specify a filename")
+        args = parser.parse_args()
 
+        if (args.filename != None):
+        # self.keyfile = args.pwfile
+            self.inputfile = '/home/klein/wellhousefiles/'+ args.filename
+        else:
+            self.inputfile='/home/klein/wellhousefiles/2021-03-29wellhouse.csv'
 
     def ReadCSV(self,filename):
         """
@@ -64,9 +88,9 @@ class WellhouseRead(object):
 
 if __name__ == '__main__':
     dir = '/home/klein/wellhousefiles/'
-    filename = dir +'2021-03-12wellhouse.csv'
+    filename = dir +'2021-03-28wellhouse.csv'
 
-    WR = WellhouseRead(filename)
+    WR = WellhouseRead()
     WR.SetupPlotSystem()
 
 

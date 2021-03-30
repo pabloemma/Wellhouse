@@ -106,9 +106,9 @@ class MultiPlot(object):
             #self.axarr[k].plot(x, y[k], color=col[k])
             # add grid
             self.axarr[k].grid(True,linewidth=.2)
-            self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(4))
+            self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(5.))
             if(k <2) or k==4:
-                self.axarr[k].yaxis.set_major_locator(MultipleLocator(20))
+                self.axarr[k].yaxis.set_major_locator(MultipleLocator(10.))
 
             self.axarr[k].xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
             plt.setp(self.axarr[k].get_xticklabels(),rotation=45,horizontalalignment='right')
