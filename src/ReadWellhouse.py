@@ -7,6 +7,7 @@ import MultiPlot as MMP
 import time
 import argparse as argp  # we want to use CLI
 import textwrap
+import platform
 import datetime as dt
 
 class WellhouseRead(object):
@@ -36,9 +37,16 @@ class WellhouseRead(object):
 
         if (args.filename != None):
         # self.keyfile = args.pwfile
-            self.inputfile = '/home/klein/wellhousefiles/'+ args.filename
+            self.inputfile = self.GetDirectory()+ args.filename
         else:
-            self.inputfile='/home/klein/wellhousefiles/2021-03-29wellhouse.csv'
+            self.inputfile=self.GetDirectory()+'2021-03-29wellhouse.csv'
+
+    def GetDirectory(self):
+        if platform.system() == 'Darwin':
+            return '/Users/klein/wellhousefiles/'
+        elif platform.system() == 'Linux':
+        # do our arguments
+            return '/home/klein/wellhousefiles/'
 
     def ReadCSV(self,filename):
         """
