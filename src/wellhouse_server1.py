@@ -125,7 +125,7 @@ class WHSERVER(object):
         myport = 5478
 
     #check if port is used, and if so kill the process
-        process = Popen(["lsof", "-i", ":{0}".format(myport)], stdout=PIPE, stderr=PIPE)
+        process = Popen(["/usr/sbin/lsof", "-i", ":{0}".format(myport)], stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
         for process in str(stdout.decode("utf-8")).split("\n")[1:]:
             data = [x for x in process.split(" ") if x != '']
