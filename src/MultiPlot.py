@@ -106,9 +106,9 @@ class MultiPlot(object):
             #self.axarr[k].plot(x, y[k], color=col[k])
             # add grid
             self.axarr[k].grid(True,linewidth=.2)
-            self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(4))
+            self.axarr[k].yaxis.set_minor_locator(AutoMinorLocator(5.))
             if(k <2) or k==4:
-                self.axarr[k].yaxis.set_major_locator(MultipleLocator(20))
+                self.axarr[k].yaxis.set_major_locator(MultipleLocator(10.))
 
             self.axarr[k].xaxis.set_major_formatter(md.DateFormatter('%m-%d %H:%M'))
             plt.setp(self.axarr[k].get_xticklabels(),rotation=45,horizontalalignment='right')
@@ -118,6 +118,6 @@ class MultiPlot(object):
         # plt.xticks(rotation=90)
         #plt.tight_layout(pad=0,w_pad=-1.6,h_pad=-1)
         plt.savefig(self.mydir+'/wellhousefiles/test.png')
-        plt.show(block=False)
+        plt.show(block=True)
         # now save the picture as a png fiile
         plt.pause(0.0001)  # Note this correction
