@@ -39,7 +39,7 @@ class WellhouseRead(object):
         # self.keyfile = args.pwfile
             self.inputfile = self.GetDirectory()+ args.filename
         else:
-            self.inputfile=self.GetDirectory()+'2021-03-29wellhouse.csv'
+            self.inputfile=self.GetDirectory()+'2021-03-31wellhouse_tot.csv'
 
     def GetDirectory(self):
         if platform.system() == 'Darwin':
