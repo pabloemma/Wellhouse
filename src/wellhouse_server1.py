@@ -68,7 +68,7 @@ class WHSERVER(object):
         self.Multiplot = Multiplot
         #initalize the plotting
         if(Multiplot):
-            self.MMPL = MMP.MyMultiPlot([20.,0.,755.,900.,0.],[60.,50.,795.,1100.,50.],5 )
+            self.MMPL = MMP.MyMultiPlot([20.,0.,755.,900.,0.],[105.,50.,795.,1100.,50.],5 )
             self.MMPL.SetAxisLabels('Time', ['Temperature [F]', 'Humidity [%]', 'Pressure [hPa]','Barometric P [hPa]','Dew [F]'])
 
         else:
@@ -125,7 +125,7 @@ class WHSERVER(object):
         myport = 5478
 
     #check if port is used, and if so kill the process
-        process = Popen(["/usr/sbin/lsof", "-i", ":{0}".format(myport)], stdout=PIPE, stderr=PIPE)
+        process = Popen(["/usr/bin/X11/lsof", "-i", ":{0}".format(myport)], stdout=PIPE, stderr=PIPE)
         stdout, stderr = process.communicate()
         for process in str(stdout.decode("utf-8")).split("\n")[1:]:
             data = [x for x in process.split(" ") if x != '']
