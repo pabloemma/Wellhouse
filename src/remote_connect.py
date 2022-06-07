@@ -67,7 +67,7 @@ class RemoteConnect(object):
         self.command = command
 
 if __name__ == '__main__':
-    hostip = '192.168.2.127'
+    hostip = '192.168.2.125'
     RC=RemoteConnect(hostip)
     RC.CheckRemoteKey()
     checkcmd = '  ssh -oNumberOfPasswordPrompts=0' + ' pi@' + hostip + '  \"python3 /home/pi/git/Wellhouse/src/wellhouse_control.py 192.168.2.23 &\" '
