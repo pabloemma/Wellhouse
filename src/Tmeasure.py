@@ -4,7 +4,8 @@ import time
 
 import board #!!!!!!! uncomment this on Linux
 import busio
-import Adafruit_BME280
+#import Adafruit_BME280
+import basic
 import random
 import json
 
@@ -52,7 +53,7 @@ class Tmeas(object):
     def InitializeI2C(self):
         """Initailze the I2C system"""
         i2c = busio.I2C(board.SCL, board.SDA)
-        self.bme280 = Adafruit_BME280.Adafruit_BME280_I2C(i2c)
+        self.bme280 = basic.Adafruit_BME280_I2C(i2c)
 
         # OR create library object using our Bus SPI port
         # spi = busio.SPI(board.SCK, board.MOSI, board.MISO)
